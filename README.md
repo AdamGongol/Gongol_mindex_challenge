@@ -14,22 +14,85 @@ version, you can modify the `sourceCompatibility` variable in the `build.gradle`
 ### How to Use
 The following endpoints are available to use:
 ```
-* CREATE
+* CREATE - Employee
     * HTTP Method: POST 
     * URL: localhost:8080/employee
     * PAYLOAD: Employee
     * RESPONSE: Employee
-* READ
+* READ - Employee
     * HTTP Method: GET 
     * URL: localhost:8080/employee/{id}
     * RESPONSE: Employee
-* UPDATE
+* UPDATE - Employe
     * HTTP Method: PUT 
     * URL: localhost:8080/employee/{id}
     * PAYLOAD: Employee
     * RESPONSE: Employee
+
+* GetReportingStucture
+    * HTTP Method: GET 
+    * URL: localhost:8080/employee{id}/reporting-structure
+    * PAYLOAD: pathvariable id
+    * RESPONSE: ReportingStructure
+------------------------------------------
+* CREATE - Compensation
+    * HTTP Method: POST 
+    * URL: localhost:8080/compensation
+    * PAYLOAD: Compensation
+    * RESPONSE: Compensation
+
+* READ - Compensation
+    * HTTP Method: GET
+    * URL: localhost:8080/compensation
+    * PAYLOAD: Compensation
+    * RESPONSE: Compensation
+```
+ex:
+
+GetReportingStructure: localhost:8080/employee/16a596ae-edd3-4847-99fe-c4518e82c86f/reporting-structure
+
+Create: localhost:8080/compensation
+
+```json
+{
+    "employeeId": "16a596ae-edd3-4847-99fe-c4518e82c86f",
+    "salary": 1000000.00,
+    "effectiveDate": "2024-01-01"
+}
+
 ```
 
+Create: localhost:8080/employee
+```json
+{
+	"firstName": "John",
+	"lastName": "Melon",
+	"position": "Test",
+	"department": "Engineering",
+	"directReports": [
+		{
+			"firstName": "John",
+			"lastName": "Water",
+			"position": "Test",
+			"department": "Engineering",
+			"directReports": [
+				{
+					"firstName": "John",
+					"lastName": "Earth",
+					"position": "Test",
+					"department": "Engineering"
+				}
+			]
+		},
+		{
+			"firstName": "John",
+			"lastName": "Fire",
+			"position": "Test",
+			"department": "Engineering"
+		}
+	]
+}
+```
 The Employee has a JSON schema of:
 ```json
 {
