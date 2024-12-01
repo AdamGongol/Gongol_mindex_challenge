@@ -1,6 +1,7 @@
 package com.mindex.challenge.controller;
 
 import com.mindex.challenge.data.Employee;
+import com.mindex.challenge.data.ReportingStructure;
 import com.mindex.challenge.service.EmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,5 +40,18 @@ public class EmployeeController {
 
         employee.setEmployeeId(id);
         return employeeService.update(employee);
+    }
+
+    /**
+     * GET Returns a ReportingStructure object containing an Employee and their DirectReports as well as the number of reports they have
+     * @param id the String Id of the employee you would like to see the reporting structure and number of total reports
+     * @return ReportingStructure of the provided ID
+     */
+
+    @GetMapping("/employee/{id}/reporting-structure")
+    public ReportingStructure getReportingStructure(@PathVariable String id) {
+        LOG.debug("Received reporting structure request for id [{}]", id);
+
+        return employeeService.getReportingStructure(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.mindex.challenge.service.impl;
 
 import com.mindex.challenge.data.Employee;
+import com.mindex.challenge.data.ReportingStructure;
 import com.mindex.challenge.service.EmployeeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -82,5 +85,47 @@ public class EmployeeServiceImplTest {
         assertEquals(expected.getLastName(), actual.getLastName());
         assertEquals(expected.getDepartment(), actual.getDepartment());
         assertEquals(expected.getPosition(), actual.getPosition());
+    }
+
+    @Test
+    public void testDirectReportsCalc() {
+        ReportingStructure reportStruct = employeeService.getReportingStructure("16a596ae-edd3-4847-99fe-c4518e82c86f");
+
+        assertNotNull(reportStruct);
+
+        Employee employee = reportStruct.getEmployee();
+        assertEquals("John", employee.getFirstName());
+        assertEquals("Lennon", employee.getLastName());
+        assertEquals("Development Manager", employee.getPosition());
+        assertEquals("Engineering", employee.getDepartment());
+
+        assertEquals(4, reportStruct.getNumberOfReports());
+
+    }
+
+    @Test
+    public void testDirectReportsCalcNoReports() {
+        ReportingStructure reportStruct = employeeService.getReportingStructure("b7839309-3348-463b-a7e3-5de1c168beb3");
+
+        assertNotNull(reportStruct);
+
+        Employee employee = reportStruct.getEmployee();
+        assertEquals("Paul", employee.getFirstName());
+        assertEquals("McCartney", employee.getLastName());
+        assertEquals("Developer I", employee.getPosition());
+        assertEquals("Engineering", employee.getDepartment());
+
+        assertEquals(0, reportStruct.getNumberOfReports());
+
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testDirectReportsCalcBadId() {
+        // Setup
+        when(employeeService.getReportingStructure(any(String.class))).thenReturn(null);
+
+        // Execute
+        employeeService.getReportingStructure("invalid-id");
+
     }
 }
